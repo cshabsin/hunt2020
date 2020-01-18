@@ -39,11 +39,11 @@ var (
 		},
 		{
 			puzzle: "The Wizard's Escape",
-			answer: "F?",
+			answer: "CJ?",
 		},
 		{
 			puzzle: "Arts and Witchcrafts",
-			answer: "J?",
+			answer: "CK?",
 		},
 		{
 			puzzle: "Drawing Board",
@@ -104,14 +104,16 @@ func (z Zipped) IndexIntoExpression() string {
 }
 
 func (z Zipped) String() string {
-	return fmt.Sprintf("<%d %c %d | %s>", z.order, z.letter, z.amount, z.first+z.of+z.second)
+	return fmt.Sprintf("<%2d %c %2d | %-20s %s>", z.order, z.letter, z.amount, z.answer, z.first+z.of+z.second)
 }
 
 func main() {
 	ClauseBy(letter).Sort(clauses)
 	AnswerBy(answer).Sort(answers)
 	zs := zip(answers, clauses)
-	fmt.Println(zs)
+	for _, z := range zs {
+		fmt.Printf("%s: %v\n", z.IndexIntoExpression(), z)
+	}
 	for _, z := range zs {
 		fmt.Print(z.IndexIntoExpression())
 	}
