@@ -35,27 +35,29 @@ var (
 		{"TT: Sand Witches", "THORNYISSUES", "BONE", "OF", "CONTENTION"},
 		{
 			puzzle: "Fortune Cookies",
-			answer: "BA?",
-			first:  "Z",
+			answer: "AA?",
+			first:  "GOFQ",
 		},
 		{
 			puzzle: "The Wizard's Escape",
-			answer: "CJ?",
-			first:  "Z",
+			answer: "CA?",
+			first:  "GZF",
 		},
 		{
 			puzzle: "Arts and Witchcrafts",
-			answer: "CK?",
-			first:  "Z",
+			answer: "Z?",
+			first:  "",
 		},
 		{
 			puzzle: "Drawing Board",
-			answer: "K?",
-			first:  "Z",
+			answer: "CZ?",
+			// first:  "HEAD",
+			// of:     "OFTHE",
+			// second: "CLASS",
 		},
 		{
 			puzzle: "Charming",
-			answer: "Z?",
+			answer: "LA?",
 			first:  "Z",
 		},
 	}
@@ -63,8 +65,8 @@ var (
 
 func main() {
 	ClauseBy(letter).Sort(clauses)
-	//	AnswerBy(answer).Sort(answers)
-	AnswerBy(expression).Sort(answers)
+	AnswerBy(answer).Sort(answers)
+	//AnswerBy(expression).Sort(answers)
 	zs := zip(answers, clauses)
 	for _, z := range zs {
 		fmt.Printf("%s: %v\n", z.IndexIntoExpression(), z)
@@ -72,5 +74,13 @@ func main() {
 	for _, z := range zs {
 		fmt.Print(z.IndexIntoExpression())
 	}
-	fmt.Print("\n")
+	fmt.Print("\n\n")
+	ZipBy(zorder).Sort(zs)
+	for _, z := range zs {
+		fmt.Printf("%s: %v\n", z.IndexIntoExpression(), z)
+	}
+	for _, z := range zs {
+		fmt.Print(z.IndexIntoExpression())
+	}
+	fmt.Print("\n\n")
 }

@@ -95,6 +95,10 @@ func expression(a1, a2 *Answer) bool {
 	return a1.expression() < a2.expression()
 }
 
+func zorder(z1, z2 *Zipped) bool {
+	return z1.order < z2.order
+}
+
 type Zipped struct {
 	Answer
 	Clause
@@ -122,3 +126,34 @@ func (z Zipped) IndexIntoExpression() string {
 func (z Zipped) String() string {
 	return fmt.Sprintf("<%2d %c %2d | %-20s %s>", z.order, z.letter, z.amount, z.answer, z.expression())
 }
+
+type ZipBy func(a1, a2 *Zipped) bool
+
+func (by ZipBy) Sort(zips []Zipped) {
+	csort := &zipSorter{
+		zips: zips,
+		by:   by,
+	}
+	sort.Sort(csort)
+}
+
+type zipSorter struct {
+	zips []Zipped
+	by   func(c1, c2 *Zipped) bool
+}
+
+// Len is part of sort.Interface.
+func (s *zipSorter) Len() int {
+	return len(s.zips)
+}
+
+// Swap is part of sort.Interface.
+func (s *zipSorter) Swap(i, j int) {
+	s.zips[i], s.zips[j] = s.zips[j], s.zips[i]
+}
+
+// Less is part of sort.Interface. It is implemented by calling the "by" closure in the sorter.
+func (s *zipSorter) Less(i, j int) bool {
+	return s.by(&s.zips[i], &s.zips[j])
+}
+
