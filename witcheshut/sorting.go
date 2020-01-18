@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -9,14 +10,14 @@ type ClauseBy func(c1, c2 *Clause) bool
 func (by ClauseBy) Sort(clauses []Clause) {
 	csort := &clauseSorter{
 		clauses: clauses,
-		by: by,
+		by:      by,
 	}
 	sort.Sort(csort)
 }
 
 type clauseSorter struct {
 	clauses []Clause
-	by func(c1, c2 *Clause) bool
+	by      func(c1, c2 *Clause) bool
 }
 
 // Len is part of sort.Interface.
@@ -35,17 +36,18 @@ func (s *clauseSorter) Less(i, j int) bool {
 }
 
 type AnswerBy func(a1, a2 *Answer) bool
+
 func (by AnswerBy) Sort(answers []Answer) {
 	csort := &answerSorter{
 		answers: answers,
-		by: by,
+		by:      by,
 	}
 	sort.Sort(csort)
 }
 
 type answerSorter struct {
 	answers []Answer
-	by func(c1, c2 *Answer) bool
+	by      func(c1, c2 *Answer) bool
 }
 
 // Len is part of sort.Interface.
@@ -63,3 +65,60 @@ func (s *answerSorter) Less(i, j int) bool {
 	return s.by(&s.answers[i], &s.answers[j])
 }
 
+type Clause struct {
+	order  int
+	letter byte
+	amount int
+}
+
+type Answer struct {
+	puzzle string
+	answer string
+	first  string
+	of     string
+	second string
+}
+
+func (a Answer) expression() string {
+	return a.first + a.of + a.second
+}
+
+func letter(c1, c2 *Clause) bool {
+	return c1.letter < c2.letter
+}
+
+func answer(a1, a2 *Answer) bool {
+	return a1.answer < a2.answer
+}
+
+func expression(a1, a2 *Answer) bool {
+	return a1.expression() < a2.expression()
+}
+
+type Zipped struct {
+	Answer
+	Clause
+}
+
+func zip(as []Answer, cs []Clause) []Zipped {
+	if len(as) != len(cs) {
+		panic("whoa")
+	}
+	var zs []Zipped
+	for i, a := range as {
+		zs = append(zs, Zipped{a, cs[i]})
+	}
+	return zs
+}
+
+func (z Zipped) IndexIntoExpression() string {
+	if z.amount > len(z.expression()) {
+		return "?"
+	}
+
+	return string(z.expression()[z.amount-1])
+}
+
+func (z Zipped) String() string {
+	return fmt.Sprintf("<%2d %c %2d | %-20s %s>", z.order, z.letter, z.amount, z.answer, z.expression())
+}

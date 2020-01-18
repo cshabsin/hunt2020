@@ -35,81 +35,36 @@ var (
 		{"TT: Sand Witches", "THORNYISSUES", "BONE", "OF", "CONTENTION"},
 		{
 			puzzle: "Fortune Cookies",
-			answer: "A?",
+			answer: "BA?",
+			first:  "Z",
 		},
 		{
 			puzzle: "The Wizard's Escape",
 			answer: "CJ?",
+			first:  "Z",
 		},
 		{
 			puzzle: "Arts and Witchcrafts",
 			answer: "CK?",
+			first:  "Z",
 		},
 		{
 			puzzle: "Drawing Board",
 			answer: "K?",
+			first:  "Z",
 		},
 		{
 			puzzle: "Charming",
 			answer: "Z?",
+			first:  "Z",
 		},
 	}
 )
 
-type Clause struct {
-	order int
-	letter byte
-	amount int
-}
-
-type Answer struct {
-	puzzle string
-	answer string
-	first  string
-	of     string
-	second string
-}
-
-func letter(c1, c2 *Clause) bool {
-	return c1.letter < c2.letter
-}
-
-func answer(a1, a2 *Answer) bool {
-	return a1.answer < a2.answer
-}
-
-type Zipped struct {
-	Answer
-	Clause
-}
-
-func zip(as []Answer, cs[]Clause) []Zipped {
-	if len(as) != len(cs) {
-		panic("whoa")
-	}
-	var zs []Zipped
-	for i, a := range as {
-		zs = append(zs, Zipped{a, cs[i]})
-	}
-	return zs
-}
-
-func (z Zipped) IndexIntoExpression() string {
-	expression := z.first + z.of + z.second
-	if z.amount > len(expression) {
-		return "?"
-	}
-	
-	return string(expression[z.amount-1])
-}
-
-func (z Zipped) String() string {
-	return fmt.Sprintf("<%2d %c %2d | %-20s %s>", z.order, z.letter, z.amount, z.answer, z.first+z.of+z.second)
-}
-
 func main() {
 	ClauseBy(letter).Sort(clauses)
-	AnswerBy(answer).Sort(answers)
+	//	AnswerBy(answer).Sort(answers)
+	AnswerBy(expression).Sort(answers)
 	zs := zip(answers, clauses)
 	for _, z := range zs {
 		fmt.Printf("%s: %v\n", z.IndexIntoExpression(), z)
