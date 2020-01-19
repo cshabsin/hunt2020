@@ -24,6 +24,7 @@ var (
 	}
 	answers = []Answer{
 		{"Player Piano", "ALABAMA", "HEART", "OF", "DIXIE"},
+		{"Fortune Cookies", "AMENDMENTS", "BILL", "OF", "RIGHTS"},
 		{"Wizard Woods", "BUREAU", "CHEST", "OF", "DRAWERS"},
 		{"Pirate Ship", "CHARACTERFLAW", "FEET", "OF", "CLAY"},
 		{"Magic 8-Ball", "CORNUCOPIA", "HORN", "OF", "PLENTY"},
@@ -33,13 +34,6 @@ var (
 		{"Checkerboard", "LEGALBALANCE", "SCALES", "OF", "JUSTICE"},
 		{"Fortune Teller", "LOCALITY", "NECK", "OFTHE", "WOODS"},
 		{"TT: Sand Witches", "THORNYISSUES", "BONE", "OF", "CONTENTION"},
-		{
-			puzzle: "Fortune Cookies",
-			answer: "AMENDMENTS",
-			first: "BILL",
-			of: "OF",
-			second: "RIGHTS",
-		},
 		{
 			puzzle: "The Wizard's Escape",
 		},
@@ -54,7 +48,7 @@ var (
 		},
 	}
 	betweens = []string{
-		"AA", "BA", "BJ", "CA", "CI", "D", "GZ", "I", "LB", "LF", "M", "Z",
+		"AA", "ALB", "BA", "CA", "CI", "D", "GZ", "I", "LB", "LF", "M", "Z",
 	}
 )
 
