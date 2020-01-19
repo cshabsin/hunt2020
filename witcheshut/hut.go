@@ -35,52 +35,82 @@ var (
 		{"TT: Sand Witches", "THORNYISSUES", "BONE", "OF", "CONTENTION"},
 		{
 			puzzle: "Fortune Cookies",
-			answer: "AA?",
-			first:  "GOFQ",
+			answer: "AMENDMENTS",
+			first: "BILL",
+			of: "OF",
+			second: "RIGHTS",
 		},
 		{
 			puzzle: "The Wizard's Escape",
-			answer: "CA?",
-			first:  "GZF",
 		},
 		{
 			puzzle: "Arts and Witchcrafts",
-			answer: "Z?",
-			first:  "",
 		},
 		{
 			puzzle: "Drawing Board",
-			answer: "CZ?",
-			// first:  "HEAD",
-			// of:     "OFTHE",
-			// second: "CLASS",
 		},
 		{
 			puzzle: "Charming",
-			answer: "LA?",
-			first:  "Z",
 		},
+	}
+	betweens = []string{
+		"AA", "BA", "BJ", "CA", "CI", "D", "GZ", "I", "LB", "LF", "M", "Z",
 	}
 )
 
+func out(zs []Zipped) string {
+	var s string
+	for _, z := range zs {
+		s += z.IndexIntoExpression()
+	}
+	return s
+}
+
 func main() {
+	for a := 0; a < len(betweens); a++ {
+		for b := a; b < len(betweens); b++ {
+			for c := b; c < len(betweens); c++ {
+				for d := c; d < len(betweens); d++ {
+						in := []string{
+							betweens[a],
+							betweens[b],
+							betweens[c],
+							betweens[d],
+						}
+						zs := handle(clauses, answers, in, false)
+						fmt.Printf("%s | %s\n", out(zs), in)
+				}
+			}
+		}
+	}
+
+}
+
+func handle(clausesIn []Clause, answersIn []Answer, ins []string, print bool) []Zipped {
+	var clauses []Clause
+	for _, c := range clausesIn {
+		clauses = append(clauses, Clause{c.order, c.letter, c.amount})
+	}
+	var answers []Answer
+	for _, a := range answersIn {
+		answers = append(answers, Answer{a.puzzle, a.answer, a.first, a.of, a.second})
+	}
+	for i := 0; i < len(ins); i++ {
+		answers[i+11].answer = ins[i]
+	}
 	ClauseBy(letter).Sort(clauses)
 	AnswerBy(answer).Sort(answers)
 	//AnswerBy(expression).Sort(answers)
 	zs := zip(answers, clauses)
-	for _, z := range zs {
-		fmt.Printf("%s: %v\n", z.IndexIntoExpression(), z)
+	if print {
+		for _, z := range zs {
+			fmt.Printf("%s: %v\n", z.IndexIntoExpression(), z)
+		}
+		for _, z := range zs {
+			fmt.Print(z.IndexIntoExpression())
+		}
+		fmt.Print("\n\n")
 	}
-	for _, z := range zs {
-		fmt.Print(z.IndexIntoExpression())
-	}
-	fmt.Print("\n\n")
 	ZipBy(zorder).Sort(zs)
-	for _, z := range zs {
-		fmt.Printf("%s: %v\n", z.IndexIntoExpression(), z)
-	}
-	for _, z := range zs {
-		fmt.Print(z.IndexIntoExpression())
-	}
-	fmt.Print("\n\n")
+	return zs
 }

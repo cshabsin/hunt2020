@@ -117,7 +117,7 @@ func zip(as []Answer, cs []Clause) []Zipped {
 
 func (z Zipped) IndexIntoExpression() string {
 	if z.amount > len(z.expression()) {
-		return "?"
+		return "_"
 	}
 
 	return string(z.expression()[z.amount-1])
